@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') -%>
+    <title>Sign Up | Blogify</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #eef2ff;
+            --text-dark: #1e1b4b;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --bg-light: #f9fafb;
+            --card-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 32px rgba(79,70,229,0.10);
+        }
+        body {
+            font-family: "Inter", sans-serif;
+            background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .auth-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+        .auth-card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            padding: 2.75rem 2.5rem;
+            width: 100%;
+            max-width: 440px;
+        }
+        .auth-logo { text-align: center; margin-bottom: 1.75rem; }
+        .auth-logo .logo-icon {
+            width: 56px; height: 56px;
+            background: var(--primary-light);
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 0.75rem;
+        }
+        .auth-logo h2 { font-family: "Merriweather", serif; font-size: 1.5rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.25rem; }
+        .auth-logo p { font-size: 0.875rem; color: var(--text-muted); margin: 0; }
+        .form-label { font-weight: 600; font-size: 0.875rem; color: var(--text-dark); margin-bottom: 0.4rem; }
+        .input-group-text {
+            background: var(--bg-light); border: 1px solid var(--border); border-right: none;
+            color: var(--text-muted); border-radius: 10px 0 0 10px;
+        }
+        .form-control {
+            border: 1px solid var(--border); border-left: none;
+            border-radius: 0 10px 10px 0; font-size: 0.95rem;
+            padding: 0.6rem 1rem; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+            outline: none;
+        }
+        .input-group:focus-within .input-group-text { border-color: var(--primary); }
+        .form-text { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.3rem; }
+        .btn-auth {
+            background: var(--primary); color: #fff; border: none;
+            border-radius: 10px; padding: 0.7rem; font-weight: 700;
+            font-size: 0.95rem; width: 100%; transition: background 0.2s, transform 0.15s;
+        }
+        .btn-auth:hover { background: #4338ca; transform: translateY(-1px); color: #fff; }
+        .divider {
+            display: flex; align-items: center; gap: 0.75rem;
+            margin: 1.5rem 0; color: var(--text-muted); font-size: 0.8rem;
+        }
+        .divider::before, .divider::after { content: ""; flex: 1; border-top: 1px solid var(--border); }
+        .auth-footer { text-align: center; font-size: 0.875rem; color: var(--text-muted); margin-top: 1.25rem; }
+        .auth-footer a { color: var(--primary); font-weight: 600; text-decoration: none; }
+        .auth-footer a:hover { text-decoration: underline; }
+        .password-toggle {
+            border: 1px solid var(--border); border-left: none;
+            background: var(--bg-light); cursor: pointer;
+            border-radius: 0 10px 10px 0; color: var(--text-muted); padding: 0 0.75rem;
+        }
+        .password-toggle:hover { color: var(--primary); }
+        .strength-bar { height: 4px; border-radius: 4px; margin-top: 0.5rem; background: var(--border); overflow: hidden; }
+        .strength-fill { height: 100%; width: 0%; border-radius: 4px; transition: width 0.3s, background 0.3s; }
+        .strength-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
+    </style>
+</head>
+<body>
+
+    <%- include('./partials/nav') %>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                <div class="logo-icon">&#9997;</div>
+                <h2>Create an account</h2>
+                <p>Join Blogify and start writing today</p>
+            </div>
+
+            <form action="/user/signup" method="post">
+
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Full Name</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input type="text" class="form-control" id="fullName" name="fullName" placeholder="John Doe" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-text"><i class="bi bi-shield-check me-1"></i>We will never share your email with anyone.</div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Create a strong password" oninput="checkStrength(this.value)" required>
+                        <button class="password-toggle" type="button" onclick="togglePassword('password', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+                    <div class="strength-label" id="strengthLabel"></div>
+                </div>
+
+                <button type="submit" class="btn btn-auth">
+                    <i class="bi bi-person-plus me-2"></i> Create Account
+                </button>
+
+            </form>
+
+            <div class="divider">or</div>
+
+            <div class="auth-footer">
+                Already have an account? <a href="/user/signin">Sign in</a>
+            </div>
+
+        </div>
+    </div>
+
+    <%- include('./partials/scripts') %>
+    <script>
+        function togglePassword(fieldId, btn) {
+            const input = document.getElementById(fieldId);
+            const icon = btn.querySelector("i");
+            if (input.type === "password") {
+                input.type = "text";
+                icon.className = "bi bi-eye-slash";
+            } else {
+                input.type = "password";
+                icon.className = "bi bi-eye";
+            }
+        }
+
+        function checkStrength(val) {
+            const fill = document.getElementById("strengthFill");
+            const label = document.getElementById("strengthLabel");
+            let strength = 0;
+            if (val.length >= 8) strength++;
+            if (/[A-Z]/.test(val)) strength++;
+            if (/[0-9]/.test(val)) strength++;
+            if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+            const levels = [
+                { w: "0%",   color: "#e5e7eb", text: "" },
+                { w: "25%",  color: "#ef4444", text: "Weak" },
+                { w: "50%",  color: "#f97316", text: "Fair" },
+                { w: "75%",  color: "#eab308", text: "Good" },
+                { w: "100%", color: "#22c55e", text: "Strong" },
+            ];
+            fill.style.width = levels[strength].w;
+            fill.style.background = levels[strength].color;
+            label.textContent = val.length > 0 ? levels[strength].text : "";
+            label.style.color = levels[strength].color;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') -%>
+    <title>Add Blog | Blogify</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #eef2ff;
+            --text-dark: #1e1b4b;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --bg-light: #f9fafb;
+            --card-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        /* ── Page Header ── */
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .page-header h1 {
+            font-family: "Merriweather", serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* ── Form Card ── */
+        .form-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 2.5rem 3rem;
+            margin-bottom: 3rem;
+        }
+
+        /* ── Labels ── */
+        .form-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            margin-bottom: 0.4rem;
+        }
+
+        /* ── Inputs & Textarea ── */
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 0.95rem;
+            padding: 0.6rem 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            color: var(--text-dark);
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+            outline: none;
+        }
+        textarea.form-control {
+            resize: vertical;
+            min-height: 200px;
+            font-family: "Merriweather", serif;
+            line-height: 1.8;
+        }
+
+        /* ── File Upload ── */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            background: var(--bg-light);
+            position: relative;
+        }
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        .upload-area input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .upload-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .upload-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .upload-text span {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* ── Image Preview ── */
+        #imagePreview {
+            display: none;
+            margin-top: 1rem;
+            border-radius: 12px;
+            overflow: hidden;
+            max-height: 260px;
+            box-shadow: var(--card-shadow);
+        }
+        #imagePreview img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            display: block;
+        }
+        #previewLabel {
+            display: none;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+        }
+
+        /* ── Section Divider ── */
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 1.75rem 0;
+        }
+
+        /* ── Submit Button ── */
+        .btn-publish {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 0.65rem 2rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background 0.2s, transform 0.15s;
+            width: 100%;
+        }
+        .btn-publish:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+            color: #fff;
+        }
+        .btn-cancel {
+            border-radius: 10px;
+            padding: 0.65rem 2rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            width: 100%;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            background: #fff;
+            transition: background 0.2s;
+        }
+        .btn-cancel:hover {
+            background: var(--bg-light);
+        }
+
+        /* ── Character counter ── */
+        .char-counter {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: right;
+            margin-top: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-card { padding: 1.5rem 1.25rem; }
+            .page-header h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <%- include('./partials/nav') %>
+
+    <div class="container py-5" style="max-width: 720px;">
+
+        <!-- ══ Page Header ══ -->
+        <div class="page-header">
+            <h1>&#9997; Write a New Blog</h1>
+            <p>Share your ideas, stories, and knowledge with the world.</p>
+        </div>
+
+        <!-- ══ Form Card ══ -->
+        <div class="form-card">
+            <form action="/blog/add-new" method="post" enctype="multipart/form-data">
+
+                <!-- Cover Image Upload -->
+                <div class="mb-4">
+                    <label class="form-label">
+                        <i class="bi bi-image me-1" style="color: var(--primary);"></i>
+                        Cover Image
+                    </label>
+                    <div class="upload-area" id="uploadArea">
+                        <input 
+                            type="file" 
+                            id="coverImageURL" 
+                            name="coverImageURL" 
+                            accept="image/*"
+                            onchange="previewImage(event)"
+                        >
+                        <div class="upload-icon"><i class="bi bi-cloud-arrow-up"></i></div>
+                        <div class="upload-text">
+                            Drag & drop or <span>browse</span> to upload
+                        </div>
+                        <div class="upload-text mt-1" style="font-size:0.78rem;">PNG, JPG, WEBP up to 5MB</div>
+                    </div>
+                    <!-- Image Preview -->
+                    <div id="imagePreview">
+                        <img id="previewImg" src="" alt="Cover Preview">
+                    </div>
+                    <p id="previewLabel"><i class="bi bi-check-circle-fill text-success me-1"></i>Cover image selected</p>
+                </div>
+
+                <hr class="section-divider">
+
+                <!-- Title -->
+                <div class="mb-4">
+                    <label for="title" class="form-label">
+                        <i class="bi bi-type-h1 me-1" style="color: var(--primary);"></i>
+                        Blog Title
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="title" 
+                        name="title" 
+                        placeholder="Enter an engaging title..."
+                        maxlength="120"
+                        oninput="updateCounter('title', 'titleCounter', 120)"
+                    >
+                    <div class="char-counter"><span id="titleCounter">0</span> / 120</div>
+                </div>
+
+                <!-- Body -->
+                <div class="mb-4">
+                    <label for="body" class="form-label">
+                        <i class="bi bi-body-text me-1" style="color: var(--primary);"></i>
+                        Blog Content
+                    </label>
+                    <textarea 
+                        class="form-control" 
+                        id="body" 
+                        name="body"
+                        placeholder="Start writing your story here..."
+                        oninput="updateCounter('body', 'bodyCounter', 5000)"
+                        maxlength="5000"
+                    ></textarea>
+                    <div class="char-counter"><span id="bodyCounter">0</span> / 5000</div>
+                </div>
+
+                <hr class="section-divider">
+
+                <!-- Action Buttons -->
+                <div class="row g-3">
+                    <div class="col-12 col-sm-4">
+                        <a href="/" class="btn btn-cancel d-block text-center text-decoration-none">
+                            <i class="bi bi-x-lg me-1"></i> Cancel
+                        </a>
+                    </div>
+                    <div class="col-12 col-sm-8">
+                        <button type="submit" class="btn btn-publish">
+                            <i class="bi bi-send me-1"></i> Publish Blog
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+    <%- include('./partials/scripts') %>
+
+    <script>
+        // Image preview
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById("previewImg").src = e.target.result;
+                document.getElementById("imagePreview").style.display = "block";
+                document.getElementById("previewLabel").style.display = "block";
+                document.getElementById("uploadArea").style.borderColor = "#4f46e5";
+                document.getElementById("uploadArea").style.background = "#eef2ff";
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Character counter
+        function updateCounter(inputId, counterId, max) {
+            const len = document.getElementById(inputId).value.length;
+            const counter = document.getElementById(counterId);
+            counter.textContent = len;
+            counter.style.color = len >= max * 0.9 ? "#ef4444" : "#6b7280";
+        }
+    </script>
+
+</body>
+</html>
